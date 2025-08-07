@@ -6,7 +6,7 @@
 /*   By: akolupae <akolupae@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/21 15:28:30 by akolupae          #+#    #+#             */
-/*   Updated: 2025/04/30 15:16:54 by akolupae         ###   ########.fr       */
+/*   Updated: 2025/08/07 17:20:35 by akolupae         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,10 @@ int	ft_atoi(const char *nptr)
 		if (nptr[i] == '-')
 			sign = -sign;
 		i++;
+		if (!ft_isdigit(nptr[i]))
+			return (0);
 	}
-	while (nptr[i] >= '0' && nptr[i] <= '9')
+	while (ft_isdigit(nptr[i]))
 	{
 		result = result * 10 + (nptr[i] - '0');
 		if ((result > INT_MAX && sign == 1) || (-result) < INT_MIN)
