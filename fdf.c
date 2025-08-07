@@ -6,7 +6,7 @@
 /*   By: akolupae <akolupae@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/06 19:24:30 by akolupae          #+#    #+#             */
-/*   Updated: 2025/08/07 15:30:45 by akolupae         ###   ########.fr       */
+/*   Updated: 2025/08/07 21:46:49 by akolupae         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,13 @@
 
 int	main(void)
 {
-	void	*mlx;
-	void	*mlx_win;
+	static mlx_image_t	*image;
+	mlx_t	*mlx;
 
-	mlx = mlx_init();
-	mlx_win = mlx_new_window(mlx, 600, 600, "Hello world!");
+	mlx = mlx_init(WIDTH, HEIGHT, "MLX42", true);
+	image = mlx_new_image(mlx, 128, 128);
+	mlx_mage_to_window(mlx, image, 0, 0);
 	mlx_loop(mlx);
-	write(1, "Hello\n", 6);
+	mlx_terminate(mlx);
 	return (0);
 }
