@@ -6,7 +6,7 @@
 /*   By: akolupae <akolupae@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/06 19:24:30 by akolupae          #+#    #+#             */
-/*   Updated: 2025/08/08 19:09:21 by akolupae         ###   ########.fr       */
+/*   Updated: 2025/08/08 19:26:11 by akolupae         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,13 +53,15 @@ void	check_args(int argc, char **argv)
 		if (num <= 0 || num != count_numbers(line))
 		{
 			ft_printf("Invalid map formatting\n");
-			ft_free(line);
+			free(line);
+			line = NULL;
 			close(fd);
 			exit (1);
 		}
-		ft_free(line);
+		free(line);
 	}
-	ft_free(line);
+	free(line);
+	line = NULL;
 	close(fd);
 }
 

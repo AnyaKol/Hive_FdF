@@ -6,7 +6,7 @@
 /*   By: akolupae <akolupae@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 16:17:46 by akolupae          #+#    #+#             */
-/*   Updated: 2025/05/30 15:22:51 by akolupae         ###   ########.fr       */
+/*   Updated: 2025/08/08 19:15:54 by akolupae         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ char	*get_next_line(int fd);
 int		ft_max(int a, int b);
 int		ft_min(int a, int b);
 void	ft_swap(int *a, int *b);
-void	ft_free(void *ptr);
+void	ft_free(void **ptr);
 
 typedef struct s_list
 {
