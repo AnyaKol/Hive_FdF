@@ -6,21 +6,25 @@
 #    By: akolupae <akolupae@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/06/19 15:02:26 by akolupae          #+#    #+#              #
-#    Updated: 2025/08/08 17:41:23 by akolupae         ###   ########.fr        #
+#    Updated: 2025/08/11 12:57:04 by akolupae         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = fdf
 
 CC = cc
-CFLAGS = -Wall -Werror -Wextra
+CFLAGS = -Wall -Werror -Wextra # -Wunreachable-code -Ofast
 INCFLAGS = $(addprefix -I, $(LIB_DIR) $(MLX_HDR))
-LINKDIR = $(addprefix -L, $(LIB_DIR) $(MLX_DIR))
+LINKDIR = $(addprefix -L, $(LIB_DIR) $(MLX_DIR)/build)
 LINKFLAGS = $(addprefix -l, ft mlx42) -ldl -lglfw -pthread -lm
 
 HDR = fdf.h
 
-SRC = fdf.c
+SRC = \
+	fdf.c \
+	utils.c \
+	args.c \
+	map.c \
 
 OBJ_DIR = obj
 OBJ = $(SRC:%.c=$(OBJ_DIR)/%.o)
@@ -30,9 +34,9 @@ LIB_DIR = libft
 LIB_NAME = $(LIB_DIR)/libft.a
 
 # ------------  MLX  --------------------------------------------------------- #
-MLX_DIR = MLX42/build
-MLX_NAME = $(MLX_DIR)/libmlx42.a
-MLX_HDR = $(MLX_DIR)/../include
+MLX_DIR = MLX42
+MLX_NAME = $(MLX_DIR)/build/libmlx42.a
+MLX_HDR = $(MLX_DIR)/include
 
 # ------------  COLORS  ------------------------------------------------------ #
 COLOR = \033[1;32m
@@ -54,7 +58,7 @@ $(LIB_NAME):
 	@$(MAKE) -C $(LIB_DIR)
 
 $(MLX_NAME):
-	$(MAKE) -C $(MLX_DIR)
+	$(MAKE) -C $(MLX_DIR)/build
 
 clean:
 	@$(MAKE) clean -C $(LIB_DIR)
@@ -65,7 +69,7 @@ fclean: clean
 	@echo "$(COLOR) Removing $(LIB_NAME)$(RESET)"
 	@rm -f $(LIB_NAME)
 	@echo "$(COLOR) Removing $(MLX_NAME)$(RESET)"
-	@$(MAKE) clean -C $(MLX_DIR)
+	@$(MAKE) clean -C $(MLX_DIR)/build
 	@echo "$(COLOR) Removing $(NAME)$(RESET)"
 	@rm -f $(NAME)
 

@@ -6,37 +6,37 @@
 /*   By: akolupae <akolupae@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 16:44:51 by akolupae          #+#    #+#             */
-/*   Updated: 2025/06/02 13:59:04 by akolupae         ###   ########.fr       */
+/*   Updated: 2025/08/11 13:12:09 by akolupae         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-static int	putchar_loop(int c, int n);
+static int	putchar_loop(int fd, int c, int n);
 
-int	print_char(int c, t_flags flags)
+int	print_char(int fd, int c, t_flags flags)
 {
 	int	char_count;
 	int	space_count;
 
 	if (!flags.minus)
-		space_count = putchar_loop((int) ' ', flags.width - 1);
-	char_count = write(1, &c, 1);
+		space_count = putchar_loop(fd, (int) ' ', flags.width - 1);
+	char_count = write(fd, &c, 1);
 	if (flags.minus)
-		space_count = putchar_loop((int) ' ', flags.width - 1);
+		space_count = putchar_loop(fd, (int) ' ', flags.width - 1);
 	if (char_count == -1 || space_count == -1)
 		return (-1);
 	return (char_count + space_count);
 }
 
-static int	putchar_loop(int c, int width)
+static int	putchar_loop(int fd, int c, int width)
 {
 	int	i;
 
 	i = 0;
 	while (i < width)
 	{
-		if (write(1, &c, 1) == -1)
+		if (write(fd, &c, 1) == -1)
 			return (-1);
 		i++;
 	}

@@ -35,7 +35,8 @@ char	*get_next_line(int fd)
 		bytes_read = read(fd, (void *) buffer_array[fd], BUFFER_SIZE);
 		if (bytes_read < 0)
 		{
-			ft_free(line);
+			free(line);
+			line = NULL;
 			return (NULL);
 		}
 		line = process_buffer(buffer_array[fd], line);
@@ -76,13 +77,13 @@ static char	*ft_strjoin_and_erase(char *line, char *buffer)
 	temp = malloc(sizeof(char) * (line_len + buffer_len + 1));
 	if (temp == NULL)
 	{
-		ft_free(line);
+		free(line);
 		return (NULL);
 	}
 	ft_copy_and_erase(temp, line, line_len);
 	ft_copy_and_erase(&temp[line_len], buffer, buffer_len);
 	temp[line_len + buffer_len] = '\0';
-	ft_free(line);
+	free(line);
 	return (temp);
 }
 

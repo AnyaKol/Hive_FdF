@@ -6,7 +6,7 @@
 /*   By: akolupae <akolupae@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/30 15:31:35 by akolupae          #+#    #+#             */
-/*   Updated: 2025/05/30 18:56:10 by akolupae         ###   ########.fr       */
+/*   Updated: 2025/08/11 13:12:26 by akolupae         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,11 +38,11 @@ typedef struct s_flags
 	int		precision;
 }	t_flags;
 
-int		ft_printf(const char *format, ...);
+int		ft_printf(int fd, const char *format, ...);
 bool	flags_are_valid(const char *format, int *format_i);
 void	fill_flags(t_flags *flags, const char *format);
 void	check_flags(t_flags *flags);
-int		print_char(int c, t_flags flags);
+int		print_char(int fd, int c, t_flags flags);
 char	*print_ptr(unsigned long ptr);
 char	*print_null(char type);
 char	*format_precision(char *str, int precision, char type);

@@ -6,85 +6,47 @@
 /*   By: akolupae <akolupae@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/06 19:24:30 by akolupae          #+#    #+#             */
-/*   Updated: 2025/08/08 19:28:43 by akolupae         ###   ########.fr       */
+/*   Updated: 2025/08/11 19:30:12 by akolupae         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-void	check_args(int argc, char **argv);
-int		count_numbers(char *line);
+static void ft_error(void);
+void	exit_keyhook(mlx_key_data_t keydata, void *param);
 
 int	main(int argc, char **argv)
 {
 	static mlx_image_t	*image;
 	mlx_t	*mlx;
+	t_map	map;
 
-	check_args(argc, argv);
-	ft_printf("Good map!\n");
+	check_args(argc, argv, &map);
+	fill_map(argv[1], &map);
 	mlx = mlx_init(WIDTH, HEIGHT, "MLX42", true);
-	image = mlx_new_image(mlx, 128, 128);
-	mlx_image_to_window(mlx, image, 0, 0);
+	if (!mlx)
+		ft_error();
+	image = mlx_new_image(mlx, 256, 256);
+	if (!image || mlx_image_to_window(mlx, image, 0, 0) < 0)
+		ft_error();
+	mlx_key_hook(mlx, exit_keyhook, mlx);
 	mlx_loop(mlx);
 	mlx_terminate(mlx);
-	return (0);
+	return (EXIT_SUCCESS);
 }
 
-void	check_args(int argc, char **argv)
-{
-	int		fd;
-	char	*line;
-	int		num;
 
-	if (argc != 2)
-	{
-		ft_printf("Invalid number of arguments\n");
-		exit(1);
-	}
-	fd = open(argv[1], O_RDONLY);
-	num = 0;
-	while (true)
-	{
-		line = get_next_line(fd);
-		if (!ft_strncmp(line, "(null)", 6))
-			break ;
-		if (num == 0)
-			num = count_numbers(line);
-		if (num <= 0 || num != count_numbers(line))
-		{
-			ft_printf("Invalid map formatting\n");
-			free(line);
-			line = NULL;
-			close(fd);
-			exit (1);
-		}
-		free(line);
-	}
-	free(line);
-	line = NULL;
-	close(fd);
+
+// Exit the program on 'Esc'
+void	exit_keyhook(mlx_key_data_t keydata, void *param)
+{
+	if (keydata.key == MLX_KEY_ESCAPE && keydata.action == MLX_PRESS)
+		mlx_close_window(param);
 }
 
-int	count_numbers(char *line)
+// Exit the program as failure.
+static void	ft_error(void)
 {
-	int	num;
-	int	i;
-
-	i = 0;
-	num = 0;
-	while (line[i] == ' ')
-		i++;
-	while (line[i] != '\n' && line[i] != '\0')
-	{
-		if (line[i] == '-')
-			i++;
-		if (!ft_isdigit(line[i]))
-			return (-1);
-		num++;
-		while (ft_isdigit(line[i]))
-			i++;
-		while (line[i] == ' ')
-			i++;
-	}
-	return (num);
+	ft_printf(STDERR, "%s", mlx_strerror(mlx_errno));
+	exit(EXIT_FAILURE);
 }
