@@ -6,7 +6,7 @@
 /*   By: akolupae <akolupae@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/11 19:33:29 by akolupae          #+#    #+#             */
-/*   Updated: 2025/08/11 20:03:09 by akolupae         ###   ########.fr       */
+/*   Updated: 2025/08/12 14:48:32 by akolupae         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,7 @@ static void	create_map(t_map *map)
 			ft_printf(STDERR, "Map allocation error\n");
 			exit (EXIT_FAILURE);
 		}
+		i++;
 	}
 }
 
