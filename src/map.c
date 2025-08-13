@@ -90,7 +90,7 @@ void	set_map_rotation(t_map *map, double xy, double zy)
 	map->angle_xy = xy;
 	map->angle_zy = zy;
 	map->offset_x = (map->cols + map->rows * sin(xy)) / 2;
-	map->offset_y = (map->peak + map->rows * sin(zy)) / 2;
+	map->offset_y = (map->peak + (map->rows + map->cols) * sin(zy)) / 2;
 }
 
 void	free_map(t_map *map)

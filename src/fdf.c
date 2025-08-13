@@ -6,7 +6,7 @@
 /*   By: akolupae <akolupae@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/06 19:24:30 by akolupae          #+#    #+#             */
-/*   Updated: 2025/08/13 18:22:09 by akolupae         ###   ########.fr       */
+/*   Updated: 2025/08/13 20:09:27 by akolupae         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,13 +55,15 @@ void	draw_map(t_data *img, t_map *map)
 	ft_printf(STDOUT, "rows: %i, cols: %i\n", map->rows, map->cols);//REMOVE
 	i = 0;
 	printf("angle xy: %f, angle zy: %f\n", map->angle_xy, map->angle_zy);
+	printf("sin xy: %f, cos zy: %f\n", sin(map->angle_xy), cos(map->angle_zy));
 	while (i < map->rows)
 	{
 		j = 0;
 		while (j < map->cols)
 		{
-			x = (j + i * sin(map->angle_xy)) * 50;
-			y = (map->peak - map->values[i][j] + i * sin(map->angle_zy)) * 50;
+			x = (j * cos(map->angle_xy) + i * sin(map->angle_xy)) * 50;
+			y = ((map->peak - map->values[i][j]) * cos(map->angle_zy) + i * sin(map->angle_zy)
+							+ j * sin(map->angle_zy)) * 50;
 			x += WIDTH / 2 - map->offset_x * 50;
 			y += HEIGHT / 2 - map->offset_y * 50;
 			draw_pixels(img, x, y);
@@ -70,6 +72,8 @@ void	draw_map(t_data *img, t_map *map)
 		i++;
 	}
 }
+
+//void	draw_line(t_data *img, )
 
 void	draw_pixels(t_data *img, int x, int y)
 {
