@@ -6,7 +6,7 @@
 /*   By: akolupae <akolupae@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/11 18:47:28 by akolupae          #+#    #+#             */
-/*   Updated: 2025/08/12 13:39:04 by akolupae         ###   ########.fr       */
+/*   Updated: 2025/08/13 12:40:22 by akolupae         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 static void	check_map(char *file, t_map *map);
 static int	count_numbers(char *line);
+static bool	check_atoi_zero(char *line);
 
 void	check_args(int argc, char **argv, t_map *map)
 {
@@ -42,8 +43,7 @@ static void	check_map(char *file, t_map *map)
 		if (map->cols == 0)
 			map->cols = count_numbers(line);
 		if (map->cols <= 0 || map->cols != count_numbers(line))
-		{
-			ft_printf(STDERR, "Invalid map formatting\n");
+		{	
 			clean_up(line, fd);
 			exit (EXIT_FAILURE);
 		}
@@ -67,7 +67,15 @@ static int	count_numbers(char *line)
 		if (line[i] == '-' || line[i] == '+')
 			i++;
 		if (!ft_isdigit(line[i]))
+		{
+			ft_printf(STDERR, "Invalid map formatting\n");
 			return (-1);
+		}
+		if (ft_atoi(&line[i]) == 0 && !check_atoi_zero(&line[i]))
+		{
+			ft_printf(STDERR, "Int limit exceded\n");
+			return (-1);
+		}
 		num++;
 		while (ft_isdigit(line[i]))
 			i++;
@@ -75,4 +83,26 @@ static int	count_numbers(char *line)
 			i++;
 	}
 	return (num);
+}
+
+static bool	check_atoi_zero(char *line)
+{
+	int	i;
+
+	i = 0;
+	if (line[i] == '-')
+		i++;
+	while (line[i] == '0')
+		i++;
+	if (ft_isdigit(line[i]))
+		return (false);
+	return (true);
+}
+
+void	clean_up(char *line, int fd)
+{
+	if (line != NULL)
+		free(line);
+	line = NULL;
+	close(fd);
 }

@@ -6,15 +6,14 @@
 /*   By: akolupae <akolupae@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/11 19:33:29 by akolupae          #+#    #+#             */
-/*   Updated: 2025/08/12 14:48:32 by akolupae         ###   ########.fr       */
+/*   Updated: 2025/08/13 17:50:13 by akolupae         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
 static void	create_map(t_map *map);
-static bool	fill_row(int *row, char *line, int cols);
-static bool	check_atoi_zero(char *line);
+static void	fill_row(int *row, char *line, int cols, int *peak);
 
 void	fill_map(char *file, t_map *map)
 {
@@ -28,20 +27,13 @@ void	fill_map(char *file, t_map *map)
 	while (i < map->rows)
 	{
 		line = get_next_line(fd);
-		if (!ft_strncmp(line, "(null)", 6))
-			break ;
-		if (!fill_row(map->values[i], line, map->cols))
-		{
-			free_map(map);
-			clean_up(line, fd);
-			ft_printf(STDERR, "Int limit exceded\n");
-			exit (EXIT_FAILURE);
-		}
+		fill_row(map->values[i], line, map->cols, &map->peak);
 		free(line);
 		i++;
 	}
 	close(fd);
-	ft_printf(STDOUT, "Map created!\n");
+	set_map_rotation(map, -M_PI / 6.0, M_PI / 6.0);
+	ft_printf(STDOUT, "Map created!\n");//REMOVE
 }
 
 static void	create_map(t_map *map)
@@ -66,9 +58,10 @@ static void	create_map(t_map *map)
 		}
 		i++;
 	}
+	map->peak = INT_MIN;
 }
 
-static bool	fill_row(int *row, char *line, int cols)
+static void	fill_row(int *row, char *line, int cols, int *peak)
 {
 	int		i;
 	int		line_i;
@@ -80,8 +73,8 @@ static bool	fill_row(int *row, char *line, int cols)
 		if (ft_isdigit(line[line_i]) || line[line_i] == '-')
 		{
 			row[i] = ft_atoi(&line[line_i]);
-			if (row[i] == 0 && !check_atoi_zero(&line[line_i]))
-				return (false);
+			if (row[i] > *peak)
+				*peak = row[i];
 			i++;
 			if (line[line_i] == '-')
 				line_i++;
@@ -90,21 +83,14 @@ static bool	fill_row(int *row, char *line, int cols)
 		}
 		line_i++;
 	}
-	return (true);
 }
 
-static bool	check_atoi_zero(char *line)
+void	set_map_rotation(t_map *map, double xy, double zy)
 {
-	int	i;
-
-	i = 0;
-	if (line[i] == '-')
-		i++;
-	while (line[i] == '0')
-		i++;
-	if (ft_isdigit(line[i]))
-		return (false);
-	return (true);
+	map->angle_xy = xy;
+	map->angle_zy = zy;
+	map->offset_x = (map->cols + map->rows * sin(xy)) / 2;
+	map->offset_y = (map->peak + map->rows * sin(zy)) / 2;
 }
 
 void	free_map(t_map *map)
