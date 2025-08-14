@@ -6,7 +6,7 @@
 /*   By: akolupae <akolupae@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/06 19:25:34 by akolupae          #+#    #+#             */
-/*   Updated: 2025/08/13 15:54:08 by akolupae         ###   ########.fr       */
+/*   Updated: 2025/08/14 17:44:55 by akolupae         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,13 @@ typedef struct s_map
 	double	angle_zy;
 }	t_map;
 
+typedef struct s_point
+{
+	int	x;
+	int	y;
+	int	color;
+}	t_point;
+
 typedef struct	s_data
 {
 	void	*img;
@@ -63,6 +70,6 @@ void	free_visuals(t_vars *vars, t_data *img);
 void	fill_map(char *file, t_map *map);
 void	set_map_rotation(t_map *map, double xy, double zy);
 void	free_map(t_map *map);
-void	ft_mlx_put_pixel(t_data *data, int x, int y, int color);
+void	ft_mlx_put_pixel(t_data *data, t_point point);
 
 #endif

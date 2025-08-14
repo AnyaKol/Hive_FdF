@@ -6,7 +6,7 @@
 /*   By: akolupae <akolupae@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/11 19:33:29 by akolupae          #+#    #+#             */
-/*   Updated: 2025/08/13 17:50:13 by akolupae         ###   ########.fr       */
+/*   Updated: 2025/08/14 12:59:32 by akolupae         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ void	fill_map(char *file, t_map *map)
 		i++;
 	}
 	close(fd);
-	set_map_rotation(map, -M_PI / 6.0, M_PI / 6.0);
+	set_map_rotation(map, M_PI / 6.0, M_PI / 6.0);
 	ft_printf(STDOUT, "Map created!\n");//REMOVE
 }
 
@@ -89,8 +89,8 @@ void	set_map_rotation(t_map *map, double xy, double zy)
 {
 	map->angle_xy = xy;
 	map->angle_zy = zy;
-	map->offset_x = (map->cols + map->rows * sin(xy)) / 2;
-	map->offset_y = (map->peak + (map->rows + map->cols) * sin(zy)) / 2;
+	map->offset_x = ((map->cols - map->rows) * cos(xy)) / 2;
+	map->offset_y = ((map->rows + map->cols) * sin(zy) - map->peak) / 2;
 }
 
 void	free_map(t_map *map)
