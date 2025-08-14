@@ -36,14 +36,15 @@ typedef struct	s_vars
 
 typedef struct s_map
 {
-	int	cols;
-	int	rows;
-	int	**values;
-	int	peak;
-	int	offset_x;
-	int	offset_y;
+	int		cols;
+	int		rows;
+	int		**values;
+	int		peak;
+	int		offset_x;
+	int		offset_y;
 	double	angle_xy;
 	double	angle_zy;
+	int		zoom;
 }	t_map;
 
 typedef struct s_point
@@ -68,8 +69,10 @@ bool	set_visuals(t_vars *vars, t_data *img);
 void	set_hooks(t_vars *vars);
 void	free_visuals(t_vars *vars, t_data *img);
 void	fill_map(char *file, t_map *map);
-void	set_map_rotation(t_map *map, double xy, double zy);
 void	free_map(t_map *map);
+void	draw_map(t_data *img, t_map *map);
 void	ft_mlx_put_pixel(t_data *data, t_point point);
+void	set_map_rotation(t_map *map, double xy, double zy);
+int		sign(int num);
 
 #endif

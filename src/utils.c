@@ -23,3 +23,17 @@ void	ft_mlx_put_pixel(t_data *data, t_point point)
 		*(unsigned int *) dst = point.color;
 	}
 }
+
+void	set_map_rotation(t_map *map, double xy, double zy)
+{
+	map->angle_xy = xy;
+	map->angle_zy = zy;
+	map->offset_x = ((map->cols - map->rows) * cos(xy)) / 2;
+	map->offset_y = ((map->rows + map->cols) * sin(zy) - map->peak) / 2;
+	map->zoom = 50;
+}
+
+int	sign(int num)
+{
+	return ((num > 0) - (num < 0));
+}
