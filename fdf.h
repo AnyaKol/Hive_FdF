@@ -6,7 +6,7 @@
 /*   By: akolupae <akolupae@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/06 19:25:34 by akolupae          #+#    #+#             */
-/*   Updated: 2025/08/14 17:44:55 by akolupae         ###   ########.fr       */
+/*   Updated: 2025/08/15 17:15:03 by akolupae         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,13 @@
 # include <fcntl.h>
 
 # include <stdio.h>//REMOVE
+
+typedef enum	e_level
+{
+	HIGH = 0,
+	MIDDLE,
+	LOW,
+}	t_level;
 
 typedef struct	s_vars
 {
@@ -49,9 +56,9 @@ typedef struct s_map
 
 typedef struct s_point
 {
-	int	x;
-	int	y;
-	int	color;
+	int		x;
+	int		y;
+	float	height;
 }	t_point;
 
 typedef struct	s_data

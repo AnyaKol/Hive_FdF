@@ -6,7 +6,7 @@
 /*   By: akolupae <akolupae@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/14 18:17:33 by akolupae          #+#    #+#             */
-/*   Updated: 2025/08/14 20:53:42 by akolupae         ###   ########.fr       */
+/*   Updated: 2025/08/15 19:46:36 by akolupae         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,8 @@ void	draw_map(t_data *img, t_map *map)
 		j = 0;
 		while (j < map->cols)
 		{
-		//	ft_printf(STDOUT, " %i", map->values[i][j]);//REMOVE
 			point = calculate_point(map, i, j);
+			//printf(" %i", map->values[i][j]);//REMOVE
 			ft_mlx_put_pixel(img, point);
 			if (j > 0)
 				draw_line(img, calculate_point(map, i, j - 1), point);
@@ -38,7 +38,7 @@ void	draw_map(t_data *img, t_map *map)
 				draw_line(img, calculate_point(map, i - 1, j), point);
 			j++;
 		}
-	//	ft_printf(STDOUT, "\n");//REMOVE
+		//ft_printf(STDOUT, "\n");//REMOVE
 		i++;
 	}
 }
@@ -47,15 +47,13 @@ static t_point	calculate_point(t_map *map, int i, int j)
 {
 	t_point	point;
 
+	point.height = 0;
+	if (map->peak != 0)
+		point.height = (float) map->values[i][j] / (float) abs(map->peak);
 	point.x = (j - i) * cos(map->angle_xy) * map->zoom;
 	point.y = ((j + i) * sin(map->angle_zy) - map->values[i][j]) * map->zoom;
 	point.x += WIDTH / 2 - map->offset_x * map->zoom;
 	point.y += HEIGHT / 2 - map->offset_y * map->zoom;
-	if (map->values[i][j] >= 0)
-		point.color = 0x0000FF00 + (ft_min(map->values[i][j], 127) << 16) - (ft_min(map->values[i][j], 127) << 8);
-	else
-		point.color = 0x0000FF00 + ft_min(-map->values[i][j], 127) - (ft_min(-map->values[i][j], 127) << 8);
-//	ft_printf(STDOUT, "height: %i, color: %i\n", map->values[i][j], point.color);//REMOVE
 	return (point);
 }
 
@@ -65,7 +63,7 @@ static void	draw_line(t_data *img, t_point a, t_point b)
 
 	dif.x = b.x - a.x;
 	dif.y = b.y - a.y;
-	dif.color = b.color - a.color;
+	dif.height = b.height - a.height;
 	if (abs(dif.x) > abs(dif.y))
 		draw_line_low(img, dif, a);
 	else
@@ -88,7 +86,7 @@ static void	draw_line_low(t_data *img, t_point dif, t_point line)
 		}
 		deriv += 2 * abs(dif.y) * sign(dif.y);
 		line.x += sign(dif.x);
-		line.color += dif.color / abs(dif.x);
+		line.height += dif.height / abs(dif.x);
 		ft_mlx_put_pixel(img, line);
 	}
 }
@@ -109,7 +107,7 @@ static void	draw_line_high(t_data *img, t_point dif, t_point line)
 		}
 		deriv += 2 * abs(dif.x) * sign(dif.x);
 		line.y += sign(dif.y);
-		line.color += dif.color / abs(dif.y);
+		line.height += dif.height / abs(dif.y);
 		ft_mlx_put_pixel(img, line);
 	}
 }

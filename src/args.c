@@ -43,7 +43,8 @@ static void	check_map(char *file, t_map *map)
 		if (map->cols == 0)
 			map->cols = count_numbers(line);
 		if (map->cols <= 0 || map->cols != count_numbers(line))
-		{	
+		{
+			ft_printf(STDERR, "Map not rectangular or empty\n");
 			clean_up(line, fd);
 			exit (EXIT_FAILURE);
 		}

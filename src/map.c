@@ -6,7 +6,7 @@
 /*   By: akolupae <akolupae@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/11 19:33:29 by akolupae          #+#    #+#             */
-/*   Updated: 2025/08/14 19:37:49 by akolupae         ###   ########.fr       */
+/*   Updated: 2025/08/15 16:17:32 by akolupae         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ static void	create_map(t_map *map)
 		}
 		i++;
 	}
-	map->peak = INT_MIN;
+	map->peak = 0;
 }
 
 static void	fill_row(int *row, char *line, int cols, int *peak)
@@ -72,7 +72,7 @@ static void	fill_row(int *row, char *line, int cols, int *peak)
 		if (ft_isdigit(line[line_i]) || line[line_i] == '-')
 		{
 			row[i] = ft_atoi(&line[line_i]);
-			if (row[i] > *peak)
+			if (abs(row[i]) > abs(*peak))
 				*peak = row[i];
 			i++;
 			if (line[line_i] == '-')
