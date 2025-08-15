@@ -6,7 +6,7 @@
 /*   By: akolupae <akolupae@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/11 18:47:28 by akolupae          #+#    #+#             */
-/*   Updated: 2025/08/13 12:40:22 by akolupae         ###   ########.fr       */
+/*   Updated: 2025/08/15 20:09:25 by akolupae         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	check_args(int argc, char **argv, t_map *map)
 {
 	if (argc != 2)
 	{
-		ft_printf(STDOUT, "Invalid number of arguments\n");
+		ft_printf(STDOUT, "Invalid number of arguments!\n");
 		exit(EXIT_FAILURE);
 	}
 	check_map(argv[1], map);
@@ -29,7 +29,8 @@ void	check_args(int argc, char **argv, t_map *map)
 static void	check_map(char *file, t_map *map)
 {
 	int		fd;
-	char	*line;	
+	char	*line;
+	int		count;
 
 	fd = open(file, O_RDONLY);
 	map->cols = 0;
@@ -40,18 +41,24 @@ static void	check_map(char *file, t_map *map)
 		if (!ft_strncmp(line, "(null)", 6))
 			break ;
 		map->rows++;
+		count = count_numbers(line);
 		if (map->cols == 0)
-			map->cols = count_numbers(line);
-		if (map->cols <= 0 || map->cols != count_numbers(line))
+			map->cols = count;
+		if (count == -1 || map->cols != count)
 		{
-			ft_printf(STDERR, "Map not rectangular or empty\n");
+			if (count != -1)
+				ft_printf(STDERR, "Map is not rectangular!\n");
 			clean_up(line, fd);
 			exit (EXIT_FAILURE);
 		}
 		free(line);
 	}
 	clean_up(line, fd);
-	ft_printf(STDOUT, "Good map!\n");
+	if (map->rows == 0 || map->cols == 0)
+	{
+		ft_printf(STDERR, "Map is empty!\n");
+		exit (EXIT_FAILURE);
+	}
 }
 
 static int	count_numbers(char *line)
@@ -69,12 +76,12 @@ static int	count_numbers(char *line)
 			i++;
 		if (!ft_isdigit(line[i]))
 		{
-			ft_printf(STDERR, "Invalid map formatting\n");
+			ft_printf(STDERR, "Invalid map formatting!\n");
 			return (-1);
 		}
 		if (ft_atoi(&line[i]) == 0 && !check_atoi_zero(&line[i]))
 		{
-			ft_printf(STDERR, "Int limit exceded\n");
+			ft_printf(STDERR, "Int limit exceded!\n");
 			return (-1);
 		}
 		num++;
