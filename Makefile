@@ -28,7 +28,8 @@ SRC = $(addprefix $(SRC_DIR)/, \
 	map.c \
 	visuals.c \
 	draw.c \
-	put_pixel.c \
+	color.c \
+	commands.c \
 	)
 
 OBJ_DIR = obj

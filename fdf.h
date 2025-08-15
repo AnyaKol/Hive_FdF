@@ -78,8 +78,10 @@ void	free_visuals(t_vars *vars, t_data *img);
 void	fill_map(char *file, t_map *map);
 void	free_map(t_map *map);
 void	draw_map(t_data *img, t_map *map);
-void	ft_mlx_put_pixel(t_data *data, t_point point);
+int		calculate_color(float height);
 void	set_map_rotation(t_map *map, double xy, double zy);
+void	set_map_zoom(t_map *map, int zoom);
+void	ft_mlx_put_pixel(t_data *data, t_point point);
 int		sign(int num);
 
 #endif

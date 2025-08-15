@@ -12,13 +12,16 @@
 
 #include "fdf.h"
 
-void	set_map_rotation(t_map *map, double xy, double zy)
+void	ft_mlx_put_pixel(t_data *data, t_point point)
 {
-	map->angle_xy = xy;
-	map->angle_zy = zy;
-	map->offset_x = ((map->cols - map->rows) * cos(xy)) / 2;
-	map->offset_y = ((map->rows + map->cols) * sin(zy) - map->peak) / 2;
-	map->zoom = 50;
+	char	*dst;
+
+	if (point.x >= 0 && point.x < WIDTH && point.y >= 0 && point.y < HEIGHT)
+	{
+		dst = data->addr + (point.y * data->line_length + point.x
+			* (data->bits_per_pixel / 8));
+		*(unsigned int *) dst = calculate_color(point.height);
+	}
 }
 
 int	sign(int num)

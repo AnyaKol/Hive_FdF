@@ -6,7 +6,7 @@
 /*   By: akolupae <akolupae@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/11 19:33:29 by akolupae          #+#    #+#             */
-/*   Updated: 2025/08/15 16:17:32 by akolupae         ###   ########.fr       */
+/*   Updated: 2025/08/15 20:40:49 by akolupae         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ void	fill_map(char *file, t_map *map)
 	}
 	close(fd);
 	set_map_rotation(map, M_PI / 6.0, M_PI / 6.0);
+	set_map_zoom(map, 100);
 }
 
 static void	create_map(t_map *map)

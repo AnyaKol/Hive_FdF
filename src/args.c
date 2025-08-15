@@ -23,6 +23,8 @@ void	check_args(int argc, char **argv, t_map *map)
 		ft_printf(STDOUT, "Invalid number of arguments!\n");
 		exit(EXIT_FAILURE);
 	}
+	map->cols = 0;
+	map->rows = 0;
 	check_map(argv[1], map);
 }
 
@@ -33,8 +35,6 @@ static void	check_map(char *file, t_map *map)
 	int		count;
 
 	fd = open(file, O_RDONLY);
-	map->cols = 0;
-	map->rows = 0;
 	while (true)
 	{
 		line = get_next_line(fd);

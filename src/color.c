@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   put_pixel.c                                        :+:      :+:    :+:   */
+/*   color.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: akolupae <akolupae@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -12,25 +12,11 @@
 
 #include "fdf.h"
 
-static int	calculate_color(float height);
 static int	get_color(t_level level);
 static int	get_color_percent(int start, int end, float height);
 static int	get_last_byte(int num);
 
-
-void	ft_mlx_put_pixel(t_data *data, t_point point)
-{
-	char	*dst;
-
-	if (point.x >= 0 && point.x < WIDTH && point.y >= 0 && point.y < HEIGHT)
-	{
-		dst = data->addr + (point.y * data->line_length + point.x
-			* (data->bits_per_pixel / 8));
-		*(unsigned int *) dst = calculate_color(point.height);
-	}
-}
-
-static int	calculate_color(float height)
+int	calculate_color(float height)
 {
 	int	start;
 	int	end;
