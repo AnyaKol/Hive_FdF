@@ -6,7 +6,7 @@
 /*   By: akolupae <akolupae@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/11 19:33:29 by akolupae          #+#    #+#             */
-/*   Updated: 2025/08/15 20:40:49 by akolupae         ###   ########.fr       */
+/*   Updated: 2025/08/18 18:05:31 by akolupae         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void	set_map_zoom(t_map *map, int zoom)
 	int	height;
 
 	width = (map->cols + map->rows) * cos(M_PI / 6);
-	height = (map->cols + map->rows) * sin(M_PI / 6) + 2 * map->peak;
+	height = (map->cols + map->rows) * sin(M_PI / 6) + 2 * abs(map->peak);
 	if (zoom == 0 || width > WIDTH / zoom)
 		zoom = WIDTH / width;
 	if (zoom == 0 || height > HEIGHT / zoom)

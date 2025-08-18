@@ -6,14 +6,15 @@
 /*   By: akolupae <akolupae@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/11 19:33:29 by akolupae          #+#    #+#             */
-/*   Updated: 2025/08/15 20:40:49 by akolupae         ###   ########.fr       */
+/*   Updated: 2025/08/18 19:52:32 by akolupae         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-static void	create_map(t_map *map);
-static void	fill_row(int *row, char *line, int cols, int *peak);
+static int	create_map(int ***values, t_map *map);
+static void	fill_row(t_map *map, int row, char *line);
+static void	free_arr(int **values, int rows);
 
 void	fill_map(char *file, t_map *map)
 {
@@ -21,13 +22,19 @@ void	fill_map(char *file, t_map *map)
 	char	*line;
 	int		fd;
 
-	create_map(map);
+	if (create_map(&map->values, map) == ERROR
+		|| create_map(&map->colors, map) == ERROR)
+	{
+		free_map(map);
+		exit(ERROR);
+	}
+	map->peak = 0;
 	fd = open(file, O_RDONLY);
 	i = 0;
 	while (i < map->rows)
 	{
 		line = get_next_line(fd);
-		fill_row(map->values[i], line, map->cols, &map->peak);
+		fill_row(map, i, line);
 		free(line);
 		i++;
 	}
@@ -36,64 +43,73 @@ void	fill_map(char *file, t_map *map)
 	set_map_zoom(map, 100);
 }
 
-static void	create_map(t_map *map)
+static int	create_map(int ***values, t_map *map)
 {
 	int	i;
 
-	map->values = ft_calloc(map->rows + 1, sizeof(int *));
-	if (map->values == NULL)
-		print_error_and_exit("Map allocation error\n");
+	*values = ft_calloc(map->rows + 1, sizeof(int *));
+	if (*values == NULL)
+		return (print_error_and_return("Map allocation error\n"));
 	i = 0;
 	while (i < map->rows)
 	{
-		map->values[i] = ft_calloc(map->cols + 1, sizeof(int));
-		if (map->values[i] == NULL)
+		(*values)[i] = ft_calloc(map->cols + 1, sizeof(int));
+		if ((*values)[i] == NULL)
 		{
 			free_map(map);
-			print_error_and_exit("Map allocation error\n");
+			return (print_error_and_return("Map allocation error\n"));
 		}
 		i++;
 	}
-	map->peak = 0;
+	return (SUCCESS);
 }
 
-static void	fill_row(int *row, char *line, int cols, int *peak)
+static void	fill_row(t_map *map, int row, char *line)
 {
+	int		col;
 	int		i;
-	int		line_i;
 
+	col = 0;
 	i = 0;
-	line_i = 0;
-	while (i < cols)
+	while (col < map->cols)
 	{
-		if (ft_isdigit(line[line_i]) || line[line_i] == '-')
+		if (ft_isdigit(line[i]) || line[i] == '-')
 		{
-			row[i] = ft_atoi(&line[line_i]);
-			if (abs(row[i]) > abs(*peak))
-				*peak = row[i];
-			i++;
-			if (line[line_i] == '-')
-				line_i++;
-			while (ft_isdigit(line[line_i]))
-				line_i++;
+			map->values[row][col] = ft_atoi(&line[i]);
+			if (abs(map->values[row][col]) > abs(map->peak))
+				map->peak = map->values[row][col];
+			col++;
+			if (line[i] == '-')
+				i++;
+			while (ft_isdigit(line[i]))
+				i++;
+			if (!ft_strncmp(&line[i], ",0x", 3))
+				map->colors[row][col] = ft_atoi_base(&line[i + 3], BASE_HEX);
+			i += skip_color(&line[i]);
 		}
-		line_i++;
+		i++;
 	}
 }
 
 void	free_map(t_map *map)
 {
+	free_arr(map->values, map->rows);
+	free_arr(map->colors, map->rows);
+}
+
+static void	free_arr(int **values, int rows)
+{
 	int	i;
 
-	if (map->values == NULL)
+	if (values == NULL)
 		return ;
 	i = 0;
-	while (i < map->rows && map->values[i] != NULL)
+	while (i < rows && values[i] != NULL)
 	{
-		free(map->values[i]);
-		map->values[i] = NULL;
+		free(values[i]);
+		values[i] = NULL;
 		i++;
 	}
-	free(map->values);
-	map->values = NULL;
+	free(values);
+	values = NULL;
 }

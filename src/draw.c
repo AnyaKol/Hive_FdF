@@ -6,7 +6,7 @@
 /*   By: akolupae <akolupae@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/14 18:17:33 by akolupae          #+#    #+#             */
-/*   Updated: 2025/08/15 20:12:41 by akolupae         ###   ########.fr       */
+/*   Updated: 2025/08/18 19:54:47 by akolupae         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,8 @@ static t_point	calculate_point(t_map *map, int i, int j)
 	point.y = ((j + i) * sin(map->angle_zy) - map->values[i][j]) * map->zoom;
 	point.x += WIDTH / 2 - map->offset_x * map->zoom;
 	point.y += HEIGHT / 2 - map->offset_y * map->zoom;
+	point.color = map->colors[i][j];
+//	printf("peak: %d\n", map->peak);//REMOVE
 	return (point);
 }
 

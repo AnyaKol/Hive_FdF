@@ -61,6 +61,7 @@ SRC = \
 	ft_lstiter.c \
 	ft_lstmap.c \
 	ft_itoa_base.c \
+	ft_atoi_base.c \
 	ft_max.c \
 	ft_min.c \
 	ft_swap.c \

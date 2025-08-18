@@ -22,7 +22,10 @@ void	ft_mlx_put_pixel(t_data *data, t_point point)
 	{
 		dst = data->addr + (point.y * data->line_length + point.x
 				* (data->bits_per_pixel / 8));
-		*(unsigned int *) dst = calculate_color(point.height);
+	//	if (point.color != 0)
+	//		*(unsigned int *) dst = point.color;
+		//else
+			*(unsigned int *) dst = calculate_color(point.height);
 	}
 }
 

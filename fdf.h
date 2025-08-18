@@ -20,6 +20,7 @@
 # define SUCCESS 0
 # define ESCAPE 0xFF1B
 # define MOUSE_LEFT 0x0001
+# define BASE_HEX "0123456789ABCDEF"
 
 # include "libft.h"
 # include "mlx.h"
@@ -48,6 +49,7 @@ typedef struct s_map
 	int		cols;
 	int		rows;
 	int		**values;
+	int		**colors;
 	int		peak;
 	int		offset_x;
 	int		offset_y;
@@ -61,6 +63,8 @@ typedef struct s_point
 	int		x;
 	int		y;
 	float	height;
+	int		value;
+	int		color;
 }	t_point;
 
 typedef struct s_data
@@ -73,6 +77,7 @@ typedef struct s_data
 }	t_data;
 
 void	check_args(int argc, char **argv, t_map *map);
+int		skip_color(char *line);
 void	clean_up(char *line, int fd);
 bool	set_visuals(t_vars *vars, t_data *img);
 void	set_hooks(t_vars *vars);

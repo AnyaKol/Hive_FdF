@@ -6,7 +6,7 @@
 /*   By: akolupae <akolupae@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/11 18:47:28 by akolupae          #+#    #+#             */
-/*   Updated: 2025/08/18 17:46:41 by akolupae         ###   ########.fr       */
+/*   Updated: 2025/08/18 18:58:23 by akolupae         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,11 +49,14 @@ static void	check_map(char *file, t_map *map)
 	clean_up(line, fd);
 	if (map->rows == 0 || map->cols == 0)
 		print_error_and_exit("Map is empty!\n");
+	if (map->cols > INT_MAX - map->rows)
+		print_error_and_exit("Map is too big!\n");
 }
 
 static int	count_numbers(char *line)
 {
 	int	num;
+	int	value;
 	int	i;
 
 	i = 0;
@@ -66,11 +69,14 @@ static int	count_numbers(char *line)
 			i++;
 		if (!ft_isdigit(line[i]))
 			return (print_error_and_return("Invalid map formatting!\n"));
-		if (ft_atoi(&line[i]) == 0 && line[i] != '0')
+		value = ft_atoi(&line[i]);
+		if ((value == 0 && line[i] != '0')
+			|| abs(value) > INT_MAX / 4)
 			return (print_error_and_return("Int limit exceded!\n"));
 		num++;
 		while (ft_isdigit(line[i]))
 			i++;
+		i += skip_color(&line[i]);
 		while (line[i] == ' ')
 			i++;
 	}
@@ -86,6 +92,20 @@ static int	check_count(int *cols, int count)
 	if (*cols != count)
 		return (print_error_and_return("Map is not rectangular!\n"));
 	return (SUCCESS);
+}
+
+int	skip_color(char *line)
+{
+	int	i;
+
+	i = 0;
+	if (!ft_strncmp(&line[i], ",0x", 3))
+	{
+		i += 3;
+		while (ft_strchr(BASE_HEX, line[i]))
+			i++;
+	}
+	return (i);
 }
 
 void	clean_up(char *line, int fd)
