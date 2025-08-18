@@ -46,6 +46,7 @@ static int	get_color(t_level level)
 		0X00FF00,
 		0X0000FF
 	};
+
 	return (colors[level]);
 }
 
@@ -56,7 +57,6 @@ static int	get_color_percent(int start, int end, float height)
 	start = get_last_byte(start);
 	end = get_last_byte(end);
 	color = start + (end - start) * height;
-	//color = get_last_byte(color);
 	return (color);
 }
 

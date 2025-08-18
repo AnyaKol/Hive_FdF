@@ -15,7 +15,7 @@
 static int	key_exit_hook(int key, t_vars *vars);
 
 bool	set_visuals(t_vars *vars, t_data *img)
-{	
+{
 	vars->mlx = mlx_init();
 	if (!vars->mlx)
 		return (false);
@@ -31,8 +31,8 @@ bool	set_visuals(t_vars *vars, t_data *img)
 		free_visuals(vars, NULL);
 		return (false);
 	}
-	img->addr = mlx_get_data_addr(img->img, &img->bits_per_pixel, &img->line_length,
-		&img->endian);
+	img->addr = mlx_get_data_addr(img->img, &img->bits_per_pixel,
+			&img->line_length, &img->endian);
 	return (true);
 }
 

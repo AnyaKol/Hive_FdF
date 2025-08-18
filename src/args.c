@@ -6,7 +6,7 @@
 /*   By: akolupae <akolupae@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/11 18:47:28 by akolupae          #+#    #+#             */
-/*   Updated: 2025/08/15 20:09:25 by akolupae         ###   ########.fr       */
+/*   Updated: 2025/08/18 17:46:41 by akolupae         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,15 +14,12 @@
 
 static void	check_map(char *file, t_map *map);
 static int	count_numbers(char *line);
-static bool	check_atoi_zero(char *line);
+static int	check_count(int *cols, int count);
 
 void	check_args(int argc, char **argv, t_map *map)
 {
 	if (argc != 2)
-	{
-		ft_printf(STDOUT, "Invalid number of arguments!\n");
-		exit(EXIT_FAILURE);
-	}
+		print_error_and_exit("Invalid number of arguments!\n");
 	map->cols = 0;
 	map->rows = 0;
 	check_map(argv[1], map);
@@ -42,12 +39,8 @@ static void	check_map(char *file, t_map *map)
 			break ;
 		map->rows++;
 		count = count_numbers(line);
-		if (map->cols == 0)
-			map->cols = count;
-		if (count == -1 || map->cols != count)
+		if (check_count(&map->cols, count) == ERROR)
 		{
-			if (count != -1)
-				ft_printf(STDERR, "Map is not rectangular!\n");
 			clean_up(line, fd);
 			exit (EXIT_FAILURE);
 		}
@@ -55,10 +48,7 @@ static void	check_map(char *file, t_map *map)
 	}
 	clean_up(line, fd);
 	if (map->rows == 0 || map->cols == 0)
-	{
-		ft_printf(STDERR, "Map is empty!\n");
-		exit (EXIT_FAILURE);
-	}
+		print_error_and_exit("Map is empty!\n");
 }
 
 static int	count_numbers(char *line)
@@ -75,15 +65,9 @@ static int	count_numbers(char *line)
 		if (line[i] == '-' || line[i] == '+')
 			i++;
 		if (!ft_isdigit(line[i]))
-		{
-			ft_printf(STDERR, "Invalid map formatting!\n");
-			return (-1);
-		}
-		if (ft_atoi(&line[i]) == 0 && !check_atoi_zero(&line[i]))
-		{
-			ft_printf(STDERR, "Int limit exceded!\n");
-			return (-1);
-		}
+			return (print_error_and_return("Invalid map formatting!\n"));
+		if (ft_atoi(&line[i]) == 0 && line[i] != '0')
+			return (print_error_and_return("Int limit exceded!\n"));
 		num++;
 		while (ft_isdigit(line[i]))
 			i++;
@@ -93,18 +77,15 @@ static int	count_numbers(char *line)
 	return (num);
 }
 
-static bool	check_atoi_zero(char *line)
+static int	check_count(int *cols, int count)
 {
-	int	i;
-
-	i = 0;
-	if (line[i] == '-')
-		i++;
-	while (line[i] == '0')
-		i++;
-	if (ft_isdigit(line[i]))
-		return (false);
-	return (true);
+	if (count == ERROR)
+		return (ERROR);
+	if (*cols == 0)
+		*cols = count;
+	if (*cols != count)
+		return (print_error_and_return("Map is not rectangular!\n"));
+	return (SUCCESS);
 }
 
 void	clean_up(char *line, int fd)

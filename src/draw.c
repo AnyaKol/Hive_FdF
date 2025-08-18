@@ -19,8 +19,8 @@ static void		draw_line_high(t_data *img, t_point dif, t_point line);
 
 void	draw_map(t_data *img, t_map *map)
 {
-	int	i;
-	int	j;
+	int		i;
+	int		j;
 	t_point	point;
 
 	i = 0;
@@ -30,7 +30,6 @@ void	draw_map(t_data *img, t_map *map)
 		while (j < map->cols)
 		{
 			point = calculate_point(map, i, j);
-			//printf(" %i", map->values[i][j]);//REMOVE
 			ft_mlx_put_pixel(img, point);
 			if (j > 0)
 				draw_line(img, calculate_point(map, i, j - 1), point);
@@ -38,7 +37,6 @@ void	draw_map(t_data *img, t_map *map)
 				draw_line(img, calculate_point(map, i - 1, j), point);
 			j++;
 		}
-		//ft_printf(STDOUT, "\n");//REMOVE
 		i++;
 	}
 }

@@ -42,10 +42,7 @@ static void	create_map(t_map *map)
 
 	map->values = ft_calloc(map->rows + 1, sizeof(int *));
 	if (map->values == NULL)
-	{
-		ft_printf(STDERR, "Map allocation error\n");
-		exit (EXIT_FAILURE);
-	}
+		print_error_and_exit("Map allocation error\n");
 	i = 0;
 	while (i < map->rows)
 	{
@@ -53,8 +50,7 @@ static void	create_map(t_map *map)
 		if (map->values[i] == NULL)
 		{
 			free_map(map);
-			ft_printf(STDERR, "Map allocation error\n");
-			exit (EXIT_FAILURE);
+			print_error_and_exit("Map allocation error\n");
 		}
 		i++;
 	}
@@ -65,7 +61,7 @@ static void	fill_row(int *row, char *line, int cols, int *peak)
 {
 	int		i;
 	int		line_i;
-	
+
 	i = 0;
 	line_i = 0;
 	while (i < cols)

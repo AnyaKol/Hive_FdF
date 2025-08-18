@@ -17,7 +17,7 @@ void	set_map_rotation(t_map *map, double xy, double zy)
 	map->angle_xy = xy;
 	map->angle_zy = zy;
 	map->offset_x = ((map->cols - map->rows) * cos(xy)) / 2;
-	map->offset_y = ((map->rows + map->cols) * sin(zy) - map->peak) / 2;
+	map->offset_y = ((map->rows + map->cols) * sin(zy)) / 2;
 }
 
 void	set_map_zoom(t_map *map, int zoom)
@@ -26,7 +26,7 @@ void	set_map_zoom(t_map *map, int zoom)
 	int	height;
 
 	width = (map->cols + map->rows) * cos(M_PI / 6);
-	height = (map->cols + map->rows) * sin(M_PI / 6) + map->peak;
+	height = (map->cols + map->rows) * sin(M_PI / 6) + 2 * map->peak;
 	if (zoom == 0 || width > WIDTH / zoom)
 		zoom = WIDTH / width;
 	if (zoom == 0 || height > HEIGHT / zoom)

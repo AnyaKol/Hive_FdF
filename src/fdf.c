@@ -6,7 +6,7 @@
 /*   By: akolupae <akolupae@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/06 19:24:30 by akolupae          #+#    #+#             */
-/*   Updated: 2025/08/14 17:46:49 by akolupae         ###   ########.fr       */
+/*   Updated: 2025/08/18 12:50:43 by akolupae         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,7 @@ void	visuals_loop(t_map *map)
 	if (!set_visuals(&vars, &img))
 	{
 		free_map(map);
-		ft_printf(STDERR, "Failed to open window\n");
-		exit(EXIT_FAILURE);
+		print_error_and_exit("Failed to open window\n");
 	}
 	set_hooks(&vars);
 	draw_map(&img, map);

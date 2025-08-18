@@ -16,6 +16,8 @@
 # define HEIGHT 1080
 # define STDOUT 1
 # define STDERR 2
+# define ERROR -1
+# define SUCCESS 0
 # define ESCAPE 0xFF1B
 # define MOUSE_LEFT 0x0001
 
@@ -28,14 +30,14 @@
 
 # include <stdio.h>//REMOVE
 
-typedef enum	e_level
+typedef enum e_level
 {
 	HIGH = 0,
 	MIDDLE,
 	LOW,
 }	t_level;
 
-typedef struct	s_vars
+typedef struct s_vars
 {
 	void	*mlx;
 	void	*win;
@@ -61,7 +63,7 @@ typedef struct s_point
 	float	height;
 }	t_point;
 
-typedef struct	s_data
+typedef struct s_data
 {
 	void	*img;
 	char	*addr;
@@ -83,5 +85,7 @@ void	set_map_rotation(t_map *map, double xy, double zy);
 void	set_map_zoom(t_map *map, int zoom);
 void	ft_mlx_put_pixel(t_data *data, t_point point);
 int		sign(int num);
+int		print_error_and_return(char *str);
+void	print_error_and_exit(char *str);
 
 #endif
