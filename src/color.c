@@ -6,30 +6,27 @@
 /*   By: akolupae <akolupae@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/11 18:47:28 by akolupae          #+#    #+#             */
-/*   Updated: 2025/08/15 19:41:44 by akolupae         ###   ########.fr       */
+/*   Updated: 2025/08/19 12:00:38 by akolupae         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-static int	get_color(t_level level);
+static int	get_color_level(t_level level);
 static int	get_color_percent(int start, int end, float height);
-static int	get_last_byte(int num);
 
-int	calculate_color(float height)
+int	calculate_color(float height, int start, int end)
 {
-	int	start;
-	int	end;
 	int	color;
 
-	if (height == 0)
-		return (get_color(MIDDLE));
-	start = get_color(MIDDLE);
-	if (height > 0)
-		end = get_color(HIGH);
-	else
+	if (start == NO_COLOR)
+		start = get_color_level(MIDDLE);
+	if (height > 0 && end == NO_COLOR)
+		end = get_color_level(HIGH);
+	else if (height < 0)
 	{
-		end = get_color(LOW);
+		if (end == NO_COLOR)
+			end = get_color_level(LOW);
 		height = -height;
 	}
 	color = 0x000000;
@@ -39,7 +36,7 @@ int	calculate_color(float height)
 	return (color);
 }
 
-static int	get_color(t_level level)
+static int	get_color_level(t_level level)
 {
 	const int	colors[3] = {
 		0xFF0000,
@@ -60,7 +57,26 @@ static int	get_color_percent(int start, int end, float height)
 	return (color);
 }
 
-static int	get_last_byte(int num)
+int	skip_color(char *line)
 {
-	return (num & 0x0000FF);
+	int	i;
+
+	i = 0;
+	if (!ft_strncmp(&line[i], ",0x", 3))
+	{
+		i += 3;
+		while (ft_strchr(BASE_HEX, line[i]) || ft_strchr(BASE_HEX_LOW, line[i]))
+			i++;
+	}
+	return (i);
+}
+
+int	get_color_from_arg(char *line)
+{
+	int	color;
+
+	color = ft_atoi_base(line, BASE_HEX);
+	if (color == 0)
+		color = ft_atoi_base(line, BASE_HEX_LOW);
+	return (color);
 }

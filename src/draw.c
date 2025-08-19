@@ -6,7 +6,7 @@
 /*   By: akolupae <akolupae@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/14 18:17:33 by akolupae          #+#    #+#             */
-/*   Updated: 2025/08/18 19:54:47 by akolupae         ###   ########.fr       */
+/*   Updated: 2025/08/19 13:34:13 by akolupae         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,6 @@ static t_point	calculate_point(t_map *map, int i, int j)
 	point.x += WIDTH / 2 - map->offset_x * map->zoom;
 	point.y += HEIGHT / 2 - map->offset_y * map->zoom;
 	point.color = map->colors[i][j];
-//	printf("peak: %d\n", map->peak);//REMOVE
 	return (point);
 }
 
@@ -64,6 +63,16 @@ static void	draw_line(t_data *img, t_point a, t_point b)
 	dif.x = b.x - a.x;
 	dif.y = b.y - a.y;
 	dif.height = b.height - a.height;
+	if (a.color != NO_COLOR || b.color != NO_COLOR)
+	{
+		if (a.color == NO_COLOR)
+			a.color = calculate_color(a.height, NO_COLOR, NO_COLOR);
+		else if (b.color == NO_COLOR)
+			b.color = calculate_color(b.height, NO_COLOR, NO_COLOR);
+		a.height = 0;
+		dif.height = 1;
+	}
+	dif.color = b.color;
 	if (abs(dif.x) > abs(dif.y))
 		draw_line_low(img, dif, a);
 	else
@@ -74,7 +83,9 @@ static void	draw_line_low(t_data *img, t_point dif, t_point line)
 {
 	int	deriv;
 	int	end;
+	int start_color;
 
+	start_color = line.color;
 	end = line.x + dif.x - sign(dif.x);
 	deriv = 2 * abs(dif.y) - abs(dif.x);
 	while (line.x != end)
@@ -87,6 +98,7 @@ static void	draw_line_low(t_data *img, t_point dif, t_point line)
 		deriv += 2 * abs(dif.y) * sign(dif.y);
 		line.x += sign(dif.x);
 		line.height += dif.height / abs(dif.x);
+		line.color = calculate_color(line.height, start_color, dif.color);
 		ft_mlx_put_pixel(img, line);
 	}
 }
@@ -95,7 +107,9 @@ static void	draw_line_high(t_data *img, t_point dif, t_point line)
 {
 	int	deriv;
 	int	end;
+	int start_color;
 
+	start_color = line.color;
 	end = line.y + dif.y - sign(dif.y);
 	deriv = 2 * abs(dif.x) - abs(dif.y);
 	while (line.y != end)
@@ -108,6 +122,7 @@ static void	draw_line_high(t_data *img, t_point dif, t_point line)
 		deriv += 2 * abs(dif.x) * sign(dif.x);
 		line.y += sign(dif.y);
 		line.height += dif.height / abs(dif.y);
+		line.color = calculate_color(line.height, start_color, dif.color);
 		ft_mlx_put_pixel(img, line);
 	}
 }

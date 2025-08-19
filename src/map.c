@@ -6,7 +6,7 @@
 /*   By: akolupae <akolupae@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/11 19:33:29 by akolupae          #+#    #+#             */
-/*   Updated: 2025/08/18 19:52:32 by akolupae         ###   ########.fr       */
+/*   Updated: 2025/08/19 13:35:03 by akolupae         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,14 +78,14 @@ static void	fill_row(t_map *map, int row, char *line)
 			map->values[row][col] = ft_atoi(&line[i]);
 			if (abs(map->values[row][col]) > abs(map->peak))
 				map->peak = map->values[row][col];
-			col++;
 			if (line[i] == '-')
 				i++;
 			while (ft_isdigit(line[i]))
 				i++;
 			if (!ft_strncmp(&line[i], ",0x", 3))
-				map->colors[row][col] = ft_atoi_base(&line[i + 3], BASE_HEX);
+				map->colors[row][col] = get_color_from_arg(&line[i + 3]);
 			i += skip_color(&line[i]);
+			col++;
 		}
 		i++;
 	}

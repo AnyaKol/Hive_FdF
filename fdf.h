@@ -18,9 +18,11 @@
 # define STDERR 2
 # define ERROR -1
 # define SUCCESS 0
+# define NO_COLOR 0
 # define ESCAPE 0xFF1B
 # define MOUSE_LEFT 0x0001
 # define BASE_HEX "0123456789ABCDEF"
+# define BASE_HEX_LOW "0123456789abcdef"
 
 # include "libft.h"
 # include "mlx.h"
@@ -53,8 +55,8 @@ typedef struct s_map
 	int		peak;
 	int		offset_x;
 	int		offset_y;
-	double	angle_xy;
-	double	angle_zy;
+	float	angle_xy;
+	float	angle_zy;
 	int		zoom;
 }	t_map;
 
@@ -78,6 +80,7 @@ typedef struct s_data
 
 void	check_args(int argc, char **argv, t_map *map);
 int		skip_color(char *line);
+int		get_color_from_arg(char *arg);
 void	clean_up(char *line, int fd);
 bool	set_visuals(t_vars *vars, t_data *img);
 void	set_hooks(t_vars *vars);
@@ -85,11 +88,12 @@ void	free_visuals(t_vars *vars, t_data *img);
 void	fill_map(char *file, t_map *map);
 void	free_map(t_map *map);
 void	draw_map(t_data *img, t_map *map);
-int		calculate_color(float height);
-void	set_map_rotation(t_map *map, double xy, double zy);
+int		calculate_color(float height, int start, int end);
+void	set_map_rotation(t_map *map, float xy, float zy);
 void	set_map_zoom(t_map *map, int zoom);
 void	ft_mlx_put_pixel(t_data *data, t_point point);
 int		sign(int num);
+int		get_last_byte(int num);
 int		print_error_and_return(char *str);
 void	print_error_and_exit(char *str);
 

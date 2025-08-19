@@ -6,13 +6,11 @@
 /*   By: akolupae <akolupae@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/11 18:47:28 by akolupae          #+#    #+#             */
-/*   Updated: 2025/08/18 12:47:08 by akolupae         ###   ########.fr       */
+/*   Updated: 2025/08/19 11:52:31 by akolupae         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
-
-static void	print_error(char *str);
 
 void	ft_mlx_put_pixel(t_data *data, t_point point)
 {
@@ -22,10 +20,7 @@ void	ft_mlx_put_pixel(t_data *data, t_point point)
 	{
 		dst = data->addr + (point.y * data->line_length + point.x
 				* (data->bits_per_pixel / 8));
-	//	if (point.color != 0)
-	//		*(unsigned int *) dst = point.color;
-		//else
-			*(unsigned int *) dst = calculate_color(point.height);
+		*(unsigned int *) dst = point.color;
 	}
 }
 
@@ -34,19 +29,12 @@ int	sign(int num)
 	return ((num > 0) - (num < 0));
 }
 
+int	get_last_byte(int num)
+{
+	return (num & 0x0000FF);
+}
+
 int	print_error_and_return(char *str)
-{
-	print_error(str);
-	return (ERROR);
-}
-
-void	print_error_and_exit(char *str)
-{
-	print_error(str);
-	exit(EXIT_FAILURE);
-}
-
-static void	print_error(char *str)
 {
 	int	len;
 
@@ -56,4 +44,11 @@ static void	print_error(char *str)
 		write(STDERR, "ft_printf error\n", 16);
 		write(STDERR, str, len);
 	}
+	return (ERROR);
+}
+
+void	print_error_and_exit(char *str)
+{
+	print_error_and_return(str);
+	exit(EXIT_FAILURE);
 }

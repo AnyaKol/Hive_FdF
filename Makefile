@@ -29,7 +29,7 @@ SRC = $(addprefix $(SRC_DIR)/, \
 	visuals.c \
 	draw.c \
 	color.c \
-	commands.c \
+	settings.c \
 	)
 
 OBJ_DIR = obj

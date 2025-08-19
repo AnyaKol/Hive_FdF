@@ -94,20 +94,6 @@ static int	check_count(int *cols, int count)
 	return (SUCCESS);
 }
 
-int	skip_color(char *line)
-{
-	int	i;
-
-	i = 0;
-	if (!ft_strncmp(&line[i], ",0x", 3))
-	{
-		i += 3;
-		while (ft_strchr(BASE_HEX, line[i]))
-			i++;
-	}
-	return (i);
-}
-
 void	clean_up(char *line, int fd)
 {
 	if (line != NULL)
