@@ -6,13 +6,13 @@
 /*   By: akolupae <akolupae@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/13 15:02:12 by akolupae          #+#    #+#             */
-/*   Updated: 2025/08/13 15:02:14 by akolupae         ###   ########.fr       */
+/*   Updated: 2025/08/19 18:07:38 by akolupae         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-bool	set_visuals(t_vars *vars, t_data *img)
+bool	set_visuals(t_vars *vars, t_data *data)
 {
 	vars->mlx = mlx_init();
 	if (!vars->mlx)
@@ -23,21 +23,22 @@ bool	set_visuals(t_vars *vars, t_data *img)
 		free_visuals(vars, NULL);
 		return (false);
 	}
-	img->img = mlx_new_image(vars->mlx, WIDTH, HEIGHT);
-	if (!img->img)
+	data->img = mlx_new_image(vars->mlx, WIDTH, HEIGHT);
+	if (!data->img)
 	{
 		free_visuals(vars, NULL);
 		return (false);
 	}
-	img->addr = mlx_get_data_addr(img->img, &img->bits_per_pixel,
-			&img->line_length, &img->endian);
+	data->addr = mlx_get_data_addr(data->img, &data->bits_per_pixel,
+			&data->line_length, &data->endian);
+//	printf("img adress: %p\n", data->addr);//REMOVE
 	return (true);
 }
 
-void	free_visuals(t_vars *vars, t_data *img)
+void	free_visuals(t_vars *vars, t_data *data)
 {
-	if (img != NULL)
-		mlx_destroy_image(vars->mlx, img->img);
+	if (data != NULL)
+		mlx_destroy_image(vars->mlx, data->img);
 	if (vars->win != NULL)
 		mlx_destroy_window(vars->mlx, vars->win);
 	mlx_destroy_display(vars->mlx);

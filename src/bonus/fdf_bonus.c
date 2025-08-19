@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   fdf.c                                              :+:      :+:    :+:   */
+/*   fdf_bonus.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: akolupae <akolupae@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/06 19:24:30 by akolupae          #+#    #+#             */
-/*   Updated: 2025/08/18 19:53:26 by akolupae         ###   ########.fr       */
+/*   Updated: 2025/08/19 18:06:13 by akolupae         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "fdf.h"
+#include "fdf_bonus.h"
 
 void	visuals_loop(t_map *map);
 
@@ -34,8 +34,10 @@ void	visuals_loop(t_map *map)
 		free_map(map);
 		print_error_and_exit("Failed to open window\n");
 	}
-	set_hooks(&vars);
+	set_hooks_bonus(&vars, &data, map);
+	//ft_printf(STDOUT, "bit per pixel: %i\n", data.bits_per_pixel);//REMOVE
 	draw_map(&data, map);
+	//ft_printf(STDOUT, "map zoom: %i\n", map->zoom);//REMOVE
 	mlx_put_image_to_window(vars.mlx, vars.win, data.img, 0, 0);
 	mlx_loop(vars.mlx);
 	free_visuals(&vars, &data);

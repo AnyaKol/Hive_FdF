@@ -6,21 +6,26 @@
 /*   By: akolupae <akolupae@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/06 19:25:34 by akolupae          #+#    #+#             */
-/*   Updated: 2025/08/15 17:15:03 by akolupae         ###   ########.fr       */
+/*   Updated: 2025/08/19 18:20:28 by akolupae         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef FDF_H
 # define FDF_H
+
 # define WIDTH 1920
 # define HEIGHT 1080
+
 # define STDOUT 1
 # define STDERR 2
+
 # define ERROR -1
 # define SUCCESS 0
 # define NO_COLOR 0
+
 # define ESCAPE 0xFF1B
-# define MOUSE_LEFT 0x0001
+# define ON_DESTROY 17
+
 # define BASE_HEX "0123456789ABCDEF"
 # define BASE_HEX_LOW "0123456789abcdef"
 
@@ -82,12 +87,12 @@ void	check_args(int argc, char **argv, t_map *map);
 int		skip_color(char *line);
 int		get_color_from_arg(char *arg);
 void	clean_up(char *line, int fd);
-bool	set_visuals(t_vars *vars, t_data *img);
+bool	set_visuals(t_vars *vars, t_data *data);
 void	set_hooks(t_vars *vars);
-void	free_visuals(t_vars *vars, t_data *img);
+void	free_visuals(t_vars *vars, t_data *data);
 void	fill_map(char *file, t_map *map);
 void	free_map(t_map *map);
-void	draw_map(t_data *img, t_map *map);
+void	draw_map(t_data *data, t_map *map);
 int		calculate_color(float height, int start, int end);
 void	set_map_rotation(t_map *map, float xy, float zy);
 void	set_map_zoom(t_map *map, int zoom);

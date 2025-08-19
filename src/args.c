@@ -70,8 +70,7 @@ static int	count_numbers(char *line)
 		if (!ft_isdigit(line[i]))
 			return (print_error_and_return("Invalid map formatting!\n"));
 		value = ft_atoi(&line[i]);
-		if ((value == 0 && line[i] != '0')
-			|| abs(value) > INT_MAX / 4)
+		if ((value == 0 && line[i] != '0') || abs(value) > INT_MAX / 4)
 			return (print_error_and_return("Int limit exceded!\n"));
 		num++;
 		while (ft_isdigit(line[i]))

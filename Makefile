@@ -23,18 +23,29 @@ HDR = fdf.h
 SRC_DIR = src
 SRC = $(addprefix $(SRC_DIR)/, \
 	fdf.c \
+	hooks.c \
+	)
+SRC_COMMON = $(addprefix $(SRC_DIR)/, \
 	utils.c \
 	args.c \
 	map.c \
 	visuals.c \
-	hooks.c \
 	draw.c \
 	color.c \
 	settings.c \
 	)
 
+HDR_B = fdf_bonus.h
+B_DIR = $(SRC_DIR)/bonus
+SRC_B = $(addprefix $(B_DIR)/, \
+	fdf_bonus.c \
+	hooks_bonus.c \
+	)
+
 OBJ_DIR = obj
 OBJ = $(SRC:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
+OBJ_COMMON = $(SRC_COMMON:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
+OBJ_B = $(SRC_B:$(B_DIR)/%.c=$(OBJ_DIR)/%.o)
 
 # ------------  LIBFT  ------------------------------------------------------- #
 LIB_DIR = libft
@@ -52,13 +63,21 @@ RESET = \033[0m
 all: $(NAME)
 
 debug: CFLAGS += -g
-debug: all
+debug: bonus
 
-$(NAME): $(OBJ) $(LIB_NAME) $(MLX_NAME)
+$(NAME): $(OBJ) $(OBJ_COMMON) $(LIB_NAME) $(MLX_NAME)
 	@echo "$(COLOR) Building $@$(RESET)"
-	$(CC) $(CFLAGS) -o $@ $(OBJ) $(LINKDIR) $(LINKFLAGS)
+	$(CC) $(CFLAGS) -o $@ $(OBJ) $(OBJ_COMMON) $(LINKDIR) $(LINKFLAGS)
+
+bonus: $(OBJ_B) $(OBJ_COMMON) $(LIB_NAME) $(MLX_NAME)
+	@echo "$(COLOR) Building $@$(RESET)"
+	$(CC) $(CFLAGS) -o $(NAME) $(OBJ_B) $(OBJ_COMMON) $(LINKDIR) $(LINKFLAGS)
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c $(HDR)
+	mkdir -p $(OBJ_DIR)
+	$(CC) $(CFLAGS) $(INCFLAGS) -o $@ -c $<
+
+$(OBJ_DIR)/%.o: $(B_DIR)/%.c $(HDR_B)
 	mkdir -p $(OBJ_DIR)
 	$(CC) $(CFLAGS) $(INCFLAGS) -o $@ -c $<
 
@@ -84,4 +103,4 @@ fclean: clean
 re: fclean all
 
 .SECONDARY: $(OBJ_DIR) $(OBJ)
-.PHONY: all clean fclean re debug
+.PHONY: all clean fclean re debug bonus

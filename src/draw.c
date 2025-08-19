@@ -6,35 +6,36 @@
 /*   By: akolupae <akolupae@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/14 18:17:33 by akolupae          #+#    #+#             */
-/*   Updated: 2025/08/19 13:34:13 by akolupae         ###   ########.fr       */
+/*   Updated: 2025/08/19 18:06:49 by akolupae         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
 static t_point	calculate_point(t_map *map, int i, int j);
-static void		draw_line(t_data *img, t_point a, t_point b);
-static void		draw_line_low(t_data *img, t_point dif, t_point line);
-static void		draw_line_high(t_data *img, t_point dif, t_point line);
+static void		draw_line(t_data *data, t_point a, t_point b);
+static void		draw_line_low(t_data *data, t_point dif, t_point line);
+static void		draw_line_high(t_data *data, t_point dif, t_point line);
 
-void	draw_map(t_data *img, t_map *map)
+void	draw_map(t_data *data, t_map *map)
 {
 	int		i;
 	int		j;
 	t_point	point;
 
 	i = 0;
+//	printf("zoom: %i\n", map->zoom);//REMOVE
 	while (i < map->rows)
 	{
 		j = 0;
 		while (j < map->cols)
 		{
 			point = calculate_point(map, i, j);
-			ft_mlx_put_pixel(img, point);
+			ft_mlx_put_pixel(data, point);
 			if (j > 0)
-				draw_line(img, calculate_point(map, i, j - 1), point);
+				draw_line(data, calculate_point(map, i, j - 1), point);
 			if (i > 0)
-				draw_line(img, calculate_point(map, i - 1, j), point);
+				draw_line(data, calculate_point(map, i - 1, j), point);
 			j++;
 		}
 		i++;
@@ -56,7 +57,7 @@ static t_point	calculate_point(t_map *map, int i, int j)
 	return (point);
 }
 
-static void	draw_line(t_data *img, t_point a, t_point b)
+static void	draw_line(t_data *data, t_point a, t_point b)
 {
 	t_point	dif;
 
@@ -74,12 +75,12 @@ static void	draw_line(t_data *img, t_point a, t_point b)
 	}
 	dif.color = b.color;
 	if (abs(dif.x) > abs(dif.y))
-		draw_line_low(img, dif, a);
+		draw_line_low(data, dif, a);
 	else
-		draw_line_high(img, dif, a);
+		draw_line_high(data, dif, a);
 }
 
-static void	draw_line_low(t_data *img, t_point dif, t_point line)
+static void	draw_line_low(t_data *data, t_point dif, t_point line)
 {
 	int	deriv;
 	int	end;
@@ -99,11 +100,11 @@ static void	draw_line_low(t_data *img, t_point dif, t_point line)
 		line.x += sign(dif.x);
 		line.height += dif.height / abs(dif.x);
 		line.color = calculate_color(line.height, start_color, dif.color);
-		ft_mlx_put_pixel(img, line);
+		ft_mlx_put_pixel(data, line);
 	}
 }
 
-static void	draw_line_high(t_data *img, t_point dif, t_point line)
+static void	draw_line_high(t_data *data, t_point dif, t_point line)
 {
 	int	deriv;
 	int	end;
@@ -123,6 +124,6 @@ static void	draw_line_high(t_data *img, t_point dif, t_point line)
 		line.y += sign(dif.y);
 		line.height += dif.height / abs(dif.y);
 		line.color = calculate_color(line.height, start_color, dif.color);
-		ft_mlx_put_pixel(img, line);
+		ft_mlx_put_pixel(data, line);
 	}
 }
