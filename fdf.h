@@ -40,12 +40,6 @@ typedef enum e_level
 	LOW,
 }	t_level;
 
-typedef struct s_vars
-{
-	void	*mlx;
-	void	*win;
-}	t_vars;
-
 typedef struct s_map
 {
 	int		cols;
@@ -77,6 +71,12 @@ typedef struct s_data
 	int		line_length;
 	int		endian;
 }	t_data;
+
+typedef struct s_vars
+{
+	void	*mlx;
+	void	*win;
+}	t_vars;
 
 void	check_args(int argc, char **argv, t_map *map);
 int		skip_color(char *line);
