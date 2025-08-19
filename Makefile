@@ -27,6 +27,7 @@ SRC = $(addprefix $(SRC_DIR)/, \
 	args.c \
 	map.c \
 	visuals.c \
+	hooks.c \
 	draw.c \
 	color.c \
 	settings.c \

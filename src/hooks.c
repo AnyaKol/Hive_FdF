@@ -1,42 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils.c                                            :+:      :+:    :+:   */
+/*   visuals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: akolupae <akolupae@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/08/11 18:47:28 by akolupae          #+#    #+#             */
-/*   Updated: 2025/08/19 11:52:31 by akolupae         ###   ########.fr       */
+/*   Created: 2025/08/13 15:02:12 by akolupae          #+#    #+#             */
+/*   Updated: 2025/08/13 15:02:14 by akolupae         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-int	sign(int num)
+static int	key_exit_hook(int key, t_vars *vars);
+
+void	set_hooks(t_vars *vars)
 {
-	return ((num > 0) - (num < 0));
+	mlx_key_hook(vars->win, key_exit_hook, vars);
+	mlx_hook(vars->win, 17, 0, mlx_loop_end, vars->mlx);
 }
 
-int	get_last_byte(int num)
+static int	key_exit_hook(int key, t_vars *vars)
 {
-	return (num & 0x0000FF);
-}
-
-int	print_error_and_return(char *str)
-{
-	int	len;
-
-	if (ft_printf(STDERR, "%s", str) == ERROR)
-	{
-		len = ft_strlen(str);
-		write(STDERR, "ft_printf error\n", 16);
-		write(STDERR, str, len);
-	}
-	return (ERROR);
-}
-
-void	print_error_and_exit(char *str)
-{
-	print_error_and_return(str);
-	exit(EXIT_FAILURE);
+	if (key == ESCAPE)
+		mlx_loop_end(vars->mlx);
+	return (EXIT_SUCCESS);
 }

@@ -12,8 +12,6 @@
 
 #include "fdf.h"
 
-static int	key_exit_hook(int key, t_vars *vars);
-
 bool	set_visuals(t_vars *vars, t_data *img)
 {
 	vars->mlx = mlx_init();
@@ -36,19 +34,6 @@ bool	set_visuals(t_vars *vars, t_data *img)
 	return (true);
 }
 
-void	set_hooks(t_vars *vars)
-{
-	mlx_key_hook(vars->win, key_exit_hook, vars);
-	mlx_hook(vars->win, 17, 0, mlx_loop_end, vars->mlx);
-}
-
-static int	key_exit_hook(int key, t_vars *vars)
-{
-	if (key == ESCAPE)
-		mlx_loop_end(vars->mlx);
-	return (EXIT_SUCCESS);
-}
-
 void	free_visuals(t_vars *vars, t_data *img)
 {
 	if (img != NULL)
@@ -57,4 +42,16 @@ void	free_visuals(t_vars *vars, t_data *img)
 		mlx_destroy_window(vars->mlx, vars->win);
 	mlx_destroy_display(vars->mlx);
 	free(vars->mlx);
+}
+
+void	ft_mlx_put_pixel(t_data *data, t_point point)
+{
+	char	*dst;
+
+	if (point.x >= 0 && point.x < WIDTH && point.y >= 0 && point.y < HEIGHT)
+	{
+		dst = data->addr + (point.y * data->line_length + point.x
+				* (data->bits_per_pixel / 8));
+		*(unsigned int *) dst = point.color;
+	}
 }
