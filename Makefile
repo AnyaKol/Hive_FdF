@@ -62,16 +62,16 @@ RESET = \033[0m
 
 all: $(NAME)
 
-debug: CFLAGS += -g
-debug: bonus
+bonus: .bonus
 
 $(NAME): $(OBJ) $(OBJ_COMMON) $(LIB_NAME) $(MLX_NAME)
 	@echo "$(COLOR) Building $@$(RESET)"
 	$(CC) $(CFLAGS) -o $@ $(OBJ) $(OBJ_COMMON) $(LINKDIR) $(LINKFLAGS)
 
-bonus: $(OBJ_B) $(OBJ_COMMON) $(LIB_NAME) $(MLX_NAME)
-	@echo "$(COLOR) Building $@$(RESET)"
+.bonus: $(OBJ_B) $(OBJ_COMMON) $(LIB_NAME) $(MLX_NAME)
+	@echo "$(COLOR) Building bonus for $(NAME)$(RESET)"
 	$(CC) $(CFLAGS) -o $(NAME) $(OBJ_B) $(OBJ_COMMON) $(LINKDIR) $(LINKFLAGS)
+	touch .bonus
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c $(HDR)
 	mkdir -p $(OBJ_DIR)
@@ -99,8 +99,9 @@ fclean: clean
 	@$(MAKE) clean -C $(MLX_DIR)
 	@echo "$(COLOR) Removing $(NAME)$(RESET)"
 	@rm -f $(NAME)
+	@rm -f .bonus
 
 re: fclean all
 
-.SECONDARY: $(OBJ_DIR) $(OBJ)
+.SECONDARY: $(OBJ_DIR) $(OBJ) $(OBJ_COMMON) $(OBJ_B)
 .PHONY: all clean fclean re debug bonus

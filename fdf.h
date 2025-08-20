@@ -82,6 +82,8 @@ typedef struct s_vars
 }	t_vars;
 
 void	check_args(int argc, char **argv, t_map *map);
+void	check_fd(int fd);
+void	check_line(char *line, int fd, t_map *map);
 int		skip_color(char *line);
 int		get_color_from_arg(char *arg);
 void	clean_up(char *line, int fd);
@@ -95,7 +97,7 @@ int		calculate_color(float height, int start, int end);
 void	set_map_rotation(t_map *map, float xy, float zy);
 void	set_map_zoom(t_map *map, int zoom);
 void	ft_mlx_put_pixel(t_data *data, t_point point);
-int		sign(int num);
+int		get_sign(int num);
 int		get_last_byte(int num);
 int		print_error_and_return(char *str);
 void	print_error_and_exit(char *str);

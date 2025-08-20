@@ -6,7 +6,7 @@
 /*   By: akolupae <akolupae@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/11 18:47:28 by akolupae          #+#    #+#             */
-/*   Updated: 2025/08/18 18:58:23 by akolupae         ###   ########.fr       */
+/*   Updated: 2025/08/20 17:07:24 by akolupae         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 static void	check_map(char *file, t_map *map);
 static int	count_numbers(char *line);
 static int	check_count(int *cols, int count);
+static void	check_map_dimens(int rows, int cols);
 
 void	check_args(int argc, char **argv, t_map *map)
 {
@@ -32,10 +33,11 @@ static void	check_map(char *file, t_map *map)
 	int		count;
 
 	fd = open(file, O_RDONLY);
+	check_fd(fd);
 	while (true)
 	{
 		line = get_next_line(fd);
-		if (!ft_strncmp(line, "(null)", 6))
+		if (line == NULL)
 			break ;
 		map->rows++;
 		count = count_numbers(line);
@@ -47,10 +49,7 @@ static void	check_map(char *file, t_map *map)
 		free(line);
 	}
 	clean_up(line, fd);
-	if (map->rows == 0 || map->cols == 0)
-		print_error_and_exit("Map is empty!\n");
-	if (map->cols > INT_MAX - map->rows)
-		print_error_and_exit("Map is too big!\n");
+	check_map_dimens(map->rows, map->cols);
 }
 
 static int	count_numbers(char *line)
@@ -93,10 +92,10 @@ static int	check_count(int *cols, int count)
 	return (SUCCESS);
 }
 
-void	clean_up(char *line, int fd)
+static void	check_map_dimens(int rows, int cols)
 {
-	if (line != NULL)
-		free(line);
-	line = NULL;
-	close(fd);
+	if (rows == 0 || cols == 0)
+		print_error_and_exit("Map is empty!\n");
+	if (cols > INT_MAX - rows)
+		print_error_and_exit("Map is too big!\n");
 }

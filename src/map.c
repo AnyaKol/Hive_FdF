@@ -6,7 +6,7 @@
 /*   By: akolupae <akolupae@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/11 19:33:29 by akolupae          #+#    #+#             */
-/*   Updated: 2025/08/19 13:35:03 by akolupae         ###   ########.fr       */
+/*   Updated: 2025/08/20 17:07:37 by akolupae         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,18 +22,20 @@ void	fill_map(char *file, t_map *map)
 	char	*line;
 	int		fd;
 
-	if (create_map(&map->values, map) == ERROR
+	fd = open(file, O_RDONLY);
+	check_fd(fd);
+	if (map == NULL || create_map(&map->values, map) == ERROR
 		|| create_map(&map->colors, map) == ERROR)
 	{
 		free_map(map);
 		exit(ERROR);
 	}
 	map->peak = 0;
-	fd = open(file, O_RDONLY);
 	i = 0;
 	while (i < map->rows)
 	{
 		line = get_next_line(fd);
+		check_line(line, fd, map);
 		fill_row(map, i, line);
 		free(line);
 		i++;
@@ -93,6 +95,8 @@ static void	fill_row(t_map *map, int row, char *line)
 
 void	free_map(t_map *map)
 {
+	if (map == NULL)
+		return ;
 	free_arr(map->values, map->rows);
 	free_arr(map->colors, map->rows);
 }

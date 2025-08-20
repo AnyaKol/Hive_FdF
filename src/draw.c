@@ -86,17 +86,17 @@ static void	draw_line_low(t_data *data, t_point dif, t_point line)
 	int	start_color;
 
 	start_color = line.color;
-	end = line.x + dif.x - sign(dif.x);
+	end = line.x + dif.x - get_sign(dif.x);
 	deriv = 2 * abs(dif.y) - abs(dif.x);
 	while (line.x != end)
 	{
-		if (deriv * sign(dif.y) > 0)
+		if (deriv * get_sign(dif.y) > 0)
 		{
-			deriv -= 2 * abs(dif.x) * sign(dif.y);
-			line.y += sign(dif.y);
+			deriv -= 2 * abs(dif.x) * get_sign(dif.y);
+			line.y += get_sign(dif.y);
 		}
-		deriv += 2 * abs(dif.y) * sign(dif.y);
-		line.x += sign(dif.x);
+		deriv += 2 * abs(dif.y) * get_sign(dif.y);
+		line.x += get_sign(dif.x);
 		line.height += dif.height / abs(dif.x);
 		line.color = calculate_color(line.height, start_color, dif.color);
 		ft_mlx_put_pixel(data, line);
@@ -110,17 +110,17 @@ static void	draw_line_high(t_data *data, t_point dif, t_point line)
 	int	start_color;
 
 	start_color = line.color;
-	end = line.y + dif.y - sign(dif.y);
+	end = line.y + dif.y - get_sign(dif.y);
 	deriv = 2 * abs(dif.x) - abs(dif.y);
 	while (line.y != end)
 	{
-		if (deriv * sign(dif.x) > 0)
+		if (deriv * get_sign(dif.x) > 0)
 		{
-			deriv -= 2 * abs(dif.y) * sign(dif.x);
-			line.x += sign(dif.x);
+			deriv -= 2 * abs(dif.y) * get_sign(dif.x);
+			line.x += get_sign(dif.x);
 		}
-		deriv += 2 * abs(dif.x) * sign(dif.x);
-		line.y += sign(dif.y);
+		deriv += 2 * abs(dif.x) * get_sign(dif.x);
+		line.y += get_sign(dif.y);
 		line.height += dif.height / abs(dif.y);
 		line.color = calculate_color(line.height, start_color, dif.color);
 		ft_mlx_put_pixel(data, line);

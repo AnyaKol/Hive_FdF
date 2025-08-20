@@ -12,7 +12,7 @@
 
 #include "fdf.h"
 
-void	visuals_loop(t_map *map);
+static void	visuals_loop(t_map *map);
 
 int	main(int argc, char **argv)
 {
@@ -24,7 +24,7 @@ int	main(int argc, char **argv)
 	return (EXIT_SUCCESS);
 }
 
-void	visuals_loop(t_map *map)
+static void	visuals_loop(t_map *map)
 {
 	t_vars	vars;
 	t_data	data;
@@ -40,4 +40,23 @@ void	visuals_loop(t_map *map)
 	mlx_loop(vars.mlx);
 	free_visuals(&vars, &data);
 	free_map(map);
+}
+
+int	print_error_and_return(char *str)
+{
+	int	len;
+
+	if (ft_printf(STDERR, "%s", str) == ERROR)
+	{
+		len = ft_strlen(str);
+		write(STDERR, "ft_printf error\n", 16);
+		write(STDERR, str, len);
+	}
+	return (ERROR);
+}
+
+void	print_error_and_exit(char *str)
+{
+	print_error_and_return(str);
+	exit(EXIT_FAILURE);
 }

@@ -45,3 +45,22 @@ void	visuals_loop(t_env *env)
 	free_visuals(&vars, &data);
 	free_map(env->map);
 }
+
+int	print_error_and_return(char *str)
+{
+	int	len;
+
+	if (ft_printf(STDERR, "%s", str) == ERROR)
+	{
+		len = ft_strlen(str);
+		write(STDERR, "ft_printf error\n", 16);
+		write(STDERR, str, len);
+	}
+	return (ERROR);
+}
+
+void	print_error_and_exit(char *str)
+{
+	print_error_and_return(str);
+	exit(EXIT_FAILURE);
+}

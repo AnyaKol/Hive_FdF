@@ -12,7 +12,7 @@
 
 #include "fdf.h"
 
-int	sign(int num)
+int	get_sign(int num)
 {
 	return ((num > 0) - (num < 0));
 }
@@ -22,21 +22,25 @@ int	get_last_byte(int num)
 	return (num & 0x0000FF);
 }
 
-int	print_error_and_return(char *str)
+void	clean_up(char *line, int fd)
 {
-	int	len;
-
-	if (ft_printf(STDERR, "%s", str) == ERROR)
-	{
-		len = ft_strlen(str);
-		write(STDERR, "ft_printf error\n", 16);
-		write(STDERR, str, len);
-	}
-	return (ERROR);
+	if (line != NULL)
+		free(line);
+	line = NULL;
+	close(fd);
 }
 
-void	print_error_and_exit(char *str)
+void	check_fd(int fd)
 {
-	print_error_and_return(str);
-	exit(EXIT_FAILURE);
+	if (fd < 0)
+		print_error_and_exit("Failed to open file\n");
+}
+
+void	check_line(char *line, int fd, t_map *map)
+{
+	if (line == NULL)
+	{
+		close(fd);
+		free_map(map);
+	}
 }
