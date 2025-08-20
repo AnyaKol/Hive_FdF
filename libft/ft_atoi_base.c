@@ -12,7 +12,7 @@
 
 #include "libft.h"
 
-static int	get_base_value(char	c, const char *base);
+static int	get_base_value(char c, const char *base);
 
 int	ft_atoi_base(const char *nptr, const char *base)
 {
@@ -35,7 +35,7 @@ int	ft_atoi_base(const char *nptr, const char *base)
 	return (result);
 }
 
-static int	get_base_value(char	c, const char *base)
+static int	get_base_value(char c, const char *base)
 {
 	int	i;
 

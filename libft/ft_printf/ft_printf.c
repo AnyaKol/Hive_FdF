@@ -12,7 +12,7 @@
 
 #include "ft_printf.h"
 
-static int	print_content(int fd, const char *format, va_list args, int *format_i);
+static int	print_content(int fd, const char *format, va_list args, int *i);
 static char	*get_str(t_flags flags, va_list args);
 static char	*format_str(char *str, t_flags flags);
 
@@ -43,13 +43,13 @@ int	ft_printf(int fd, const char *format, ...)
 	return (print_count);
 }
 
-static int	print_content(int fd, const char *format, va_list args, int *format_i)
+static int	print_content(int fd, const char *format, va_list args, int *i)
 {
 	int		print_count;
 	t_flags	flags;
 	char	*str;
 
-	if (!flags_are_valid(format, format_i))
+	if (!flags_are_valid(format, i))
 		return (-1);
 	fill_flags(&flags, format);
 	if (flags.type == '%')
