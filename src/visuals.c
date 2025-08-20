@@ -31,7 +31,6 @@ bool	set_visuals(t_vars *vars, t_data *data)
 	}
 	data->addr = mlx_get_data_addr(data->img, &data->bits_per_pixel,
 			&data->line_length, &data->endian);
-//	printf("img adress: %p\n", data->addr);//REMOVE
 	return (true);
 }
 

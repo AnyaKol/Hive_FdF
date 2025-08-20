@@ -24,7 +24,6 @@ void	draw_map(t_data *data, t_map *map)
 	t_point	point;
 
 	i = 0;
-//	printf("zoom: %i\n", map->zoom);//REMOVE
 	while (i < map->rows)
 	{
 		j = 0;
@@ -84,7 +83,7 @@ static void	draw_line_low(t_data *data, t_point dif, t_point line)
 {
 	int	deriv;
 	int	end;
-	int start_color;
+	int	start_color;
 
 	start_color = line.color;
 	end = line.x + dif.x - sign(dif.x);
@@ -108,7 +107,7 @@ static void	draw_line_high(t_data *data, t_point dif, t_point line)
 {
 	int	deriv;
 	int	end;
-	int start_color;
+	int	start_color;
 
 	start_color = line.color;
 	end = line.y + dif.y - sign(dif.y);

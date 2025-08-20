@@ -6,7 +6,7 @@
 /*   By: akolupae <akolupae@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/06 19:25:34 by akolupae          #+#    #+#             */
-/*   Updated: 2025/08/19 18:20:28 by akolupae         ###   ########.fr       */
+/*   Updated: 2025/08/20 13:41:04 by akolupae         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,8 +35,6 @@
 # include <math.h>
 # include <sys/stat.h>
 # include <fcntl.h>
-
-# include <stdio.h>//REMOVE
 
 typedef enum e_level
 {
